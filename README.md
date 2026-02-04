@@ -66,24 +66,3 @@ The project follows a modern cloud-native architecture:
   "abnormality_probability": "0.9821",
   "diagnosis": "Abnormal"
 }
-🔄 CI/CD Pipeline (GitHub Actions)
-This project uses Continuous Deployment.
-
-Trigger: Any push to the main branch.
-
-Build Job: Builds the Docker image and pushes it to Azure Container Registry.
-
-Deploy Job: Updates the Azure Web App with the new image.
-📂 Project Structure
-Bash
-├── .github/workflows/main.yml  # The CI/CD Robot instructions
-├── app.py                      # FastAPI backend code
-├── model.py                    # PyTorch model definition
-├── Dockerfile                  # Instructions to build the container
-├── requirements.txt            # List of Python libraries
-├── best_densenet121.pth        # Trained model weights
-└── NIHCHEST.ipynb              # Jupyter Notebook used for training
-🎓 Acknowledgements
-Dataset: NIH Chest X-ray Dataset.
-
-Frameworks: PyTorch, FastAPI, Docker.
