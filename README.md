@@ -1,68 +1,50 @@
-# 🩻 Chest X-Ray Abnormality Detection (MLOps Pipeline)
+# 🩻 Dr. Abdullah AI: End-to-End Medical Diagnostic System
 
-[![Build and Deploy to Azure](https://github.com/DRAGOX7/chest-xray-mlops/actions/workflows/main.yml/badge.svg)](https://github.com/DRAGOX7/chest-xray-mlops/actions/workflows/main.yml)
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
-![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-orange)
+![Python](https://img.shields.io/badge/Python-3.9-blue)
+![PyTorch](https://img.shields.io/badge/PyTorch-Deep_Learning-red)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
-![Docker](https://img.shields.io/badge/Docker-Container-blue)
-![Azure](https://img.shields.io/badge/Azure-Cloud-0078D4)
+![Azure](https://img.shields.io/badge/Azure-Cloud_Deployment-0078D4)
+![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-FF4B4B)
 
-A full-stack Deep Learning application that detects abnormalities in chest X-rays using a fine-tuned **DenseNet121** model. The project demonstrates a complete **MLOps pipeline**, including model training, API development, containerization, and automated cloud deployment.
-
-👉 **[Live Demo (API Docs)](https://aljaf-xray-final.azurewebsites.net/docs)**
-
----
-
-## 🏗️ Architecture
-The project follows a modern cloud-native architecture:
-1.  **Model:** PyTorch DenseNet121 (Transfer Learning from ImageNet).
-2.  **API:** FastAPI (Python) for serving real-time predictions.
-3.  **Container:** Docker for consistent runtime environment.
-4.  **Registry:** Azure Container Registry (ACR) for storing images.
-5.  **Deployment:** Azure Web App for Containers (Serverless PaaS).
-6.  **CI/CD:** GitHub Actions for automated build and deploy on every push.
+## 🚀 Live Demo
+**Try the AI Doctor here:** 👉 **[https://chest-xray-mlops-vfsrzjy8svztydjkzenha9.streamlit.app](https://chest-xray-mlops-vfsrzjy8svztydjkzenha9.streamlit.app)**
 
 ---
 
-## 🚀 How to Run Locally
+## 📖 Project Overview
+This project is a full-stack **MLOps implementation** of a medical diagnostic tool. It uses Deep Learning to analyze Chest X-Rays and detect abnormalities (Pneumonia, etc.).
 
-### Prerequisites
-* Docker Desktop installed
-* Git installed
-
-### Steps
-1.  **Clone the repository**
-    ```bash
-    git clone [https://github.com/DRAGOX7/chest-xray-mlops.git](https://github.com/DRAGOX7/chest-xray-mlops.git)
-    cd chest-xray-mlops
-    ```
-
-2.  **Build the Docker image**
-    ```bash
-    docker build -t xray-app .
-    ```
-
-3.  **Run the container**
-    ```bash
-    docker run -p 8000:8000 xray-app
-    ```
-
-4.  **Test the API**
-    Open your browser to `http://localhost:8000/docs` and upload a chest X-ray image.
+The system is designed with a **Microservices Architecture**:
+1.  **The Brain (Backend):** A FastAPI server hosted on **Microsoft Azure**, running a DenseNet121 model.
+2.  **The Face (Frontend):** A Streamlit web interface for users to upload images and view results.
+3.  **The Explainability:** Integrated **Grad-CAM** (Gradient-weighted Class Activation Mapping) to visualize *why* the model made its decision.
 
 ---
 
-## 🤖 API Endpoints
+## 🏗️ System Architecture
 
-| Method | Endpoint | Description |
+| Component | Technology | Description |
 | :--- | :--- | :--- |
-| `GET` | `/` | Health check (Returns "Hello World"). |
-| `POST` | `/predict` | Upload an image file to get the probability of abnormality. |
+| **Model** | PyTorch (DenseNet121) | Pre-trained on ImageNet, fine-tuned on NIH Chest X-Ray dataset. |
+| **API** | FastAPI | Handles image processing, inference, and Grad-CAM generation. |
+| **Container** | Docker | Containerizes the environment for consistent deployment. |
+| **CI/CD** | GitHub Actions | Automatically builds and deploys to Azure on every push. |
+| **Cloud** | Azure Web App | Hosts the serverless backend. |
+| **Frontend** | Streamlit | Provides a user-friendly GUI for real-time inference. |
 
-**Example Response:**
-```json
-{
-  "filename": "patient_xray.jpg",
-  "abnormality_probability": "0.9821",
-  "diagnosis": "Abnormal"
-}
+---
+
+## 🧠 AI & Explainability
+This project goes beyond simple prediction by implementing **Grad-CAM**.
+* **Problem:** Deep Learning models are often "Black Boxes."
+* **Solution:** We extract gradients from the final convolutional layer to generate a heatmap.
+* **Result:** The user sees exactly which regions of the lungs triggered the diagnosis.
+
+---
+
+## 🛠️ How to Run Locally
+
+1. **Clone the Repo**
+   ```bash
+   git clone [https://github.com/DRAGOX7/chest-xray-mlops.git](https://github.com/DRAGOX7/chest-xray-mlops.git)
+   cd chest-xray-mlops
