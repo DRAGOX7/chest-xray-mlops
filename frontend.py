@@ -1,6 +1,8 @@
 import streamlit as st
 import requests
 from PIL import Image
+import base64
+import io
 
 # --- CONFIGURATION ---
 # This is the address of your Azure backend
@@ -39,14 +41,38 @@ if uploaded_file is not None:
                 response = requests.post(API_URL, files=files)
 
                 # Get the result
+                # Get the result
                 if response.status_code == 200:
                     result = response.json()
-                    
+
                     # Display results
                     diagnosis = result['diagnosis']
                     prob = float(result['abnormality_probability'])
-                    
+
                     st.divider()
+
+                    # Create two columns side-by-side
+                    col1, col2 = st.columns(2)
+
+                    # Left Column: Diagnosis Text
+                    with col1:
+                        if diagnosis == "Abnormal":
+                            st.error(f"🚨 **Diagnosis: ABNORMAL**")
+                        else:
+                            st.success(f"✅ **Diagnosis: NORMAL**")
+                        st.write(f"**Confidence:** {prob * 100:.2f}%")
+
+                    # Right Column: The AI Heatmap
+                    with col2:
+                        try:
+                            # The image comes back as a text string (Base64), so we convert it back to an image
+                            gradcam_data = base64.b64decode(result['gradcam_image'])
+                            gradcam_img = Image.open(io.BytesIO(gradcam_data))
+                            st.image(gradcam_img, caption="AI Heatmap (Grad-CAM)", use_container_width=True)
+                        except KeyError:
+                            st.warning("Heatmap not available yet (Update backend first).")
+
+                    st.json(result)  # Show raw data
                     
                     if diagnosis == "Abnormal":
                         st.error(f"🚨 **Diagnosis: ABNORMAL**")
