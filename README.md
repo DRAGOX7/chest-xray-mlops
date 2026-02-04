@@ -1,4 +1,4 @@
-# 🩻 Dr. Abdullah AI: End-to-End Medical Diagnostic System
+# 🩻 Chest X-Ray Abnormality Detection (MLOps Pipeline)
 
 ![Python](https://img.shields.io/badge/Python-3.9-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-Deep_Learning-red)
