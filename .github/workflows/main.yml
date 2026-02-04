@@ -30,4 +30,8 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'aljaf-xray-final'
+<<<<<<< HEAD
           images: 'aljafunique123.azurecr.io/nih-chest-xray-app:${{ github.sha }}'
+=======
+          images: 'aljafunique123.azurecr.io/nih-chest-xray-app:${{ github.sha }}'
+>>>>>>> 712c464db627c1926fe28404140d49fb056cea72

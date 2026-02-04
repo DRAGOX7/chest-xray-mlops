@@ -6,7 +6,7 @@ from PIL import Image
 import torchvision.transforms as transforms
 from model import build_model 
 
-app = FastAPI()
+app = FastAPI(title="ABDULLAH AI - VERSION 2")
 
 # --- CONFIGURATION ---
 MODEL_PATH = "best_densenet121.pth"
