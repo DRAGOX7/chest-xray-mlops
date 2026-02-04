@@ -3,17 +3,17 @@ import torch.nn.functional as F
 import io
 import base64
 import numpy as np
-import traceback  # <--- NEW: To track errors
+import traceback
 import matplotlib
 
-matplotlib.use('Agg')  # Keep this!
+matplotlib.use('Agg')  # Keep the "No Screen" fix
 import matplotlib.pyplot as plt
 from fastapi import FastAPI, File, UploadFile
 from PIL import Image
 import torchvision.transforms as transforms
 from model import build_model
 
-app = FastAPI(title="ABDULLAH AI - DEBUG MODE")
+app = FastAPI(title="ABDULLAH AI - FINAL VERSION")
 
 # --- CONFIGURATION ---
 MODEL_PATH = "best_densenet121.pth"
@@ -50,25 +50,32 @@ def get_gradcam(model, image_tensor):
     def forward_hook(module, input, output):
         activations.append(output)
 
-    # Target layer: The last block of 'features' in DenseNet
-    target_layer = model.features[-1]
+    # --- CRITICAL FIX: Target the correct layer safely ---
+    # Instead of 'features[-1]', we target 'features.denseblock4'
+    # This avoids the "inplace" ReLU conflict at the very end.
+    target_layer = model.features.denseblock4
 
     hook_handle_fwd = target_layer.register_forward_hook(forward_hook)
     hook_handle_bwd = target_layer.register_full_backward_hook(backward_hook)
 
+    # Forward Pass
     output = model(image_tensor)
     pred_idx = output.argmax(dim=1).item()
 
+    # Backward Pass
     model.zero_grad()
     score = output[0, pred_idx]
     score.backward()
 
+    # Get data
     grads = gradients[0].cpu().data.numpy()[0]
     acts = activations[0].cpu().data.numpy()[0]
 
+    # Cleanup
     hook_handle_fwd.remove()
     hook_handle_bwd.remove()
 
+    # Generate Heatmap
     weights = np.mean(grads, axis=(1, 2))
     cam = np.zeros(acts.shape[1:], dtype=np.float32)
     for i, w in enumerate(weights):
@@ -77,18 +84,25 @@ def get_gradcam(model, image_tensor):
     cam = np.maximum(cam, 0)
     cam = cam / (np.max(cam) + 1e-8)
 
+    # Resize cam to 224x224 right here to be safe
+    cam = np.uint8(255 * cam)
+    cam = Image.fromarray(cam).resize((224, 224), Image.BICUBIC)
+    cam = np.array(cam) / 255.0
+
     return cam, output
 
 
 def overlay_heatmap(heatmap, original_image):
-    heatmap = Image.fromarray(np.uint8(255 * heatmap))
-    heatmap = heatmap.resize(original_image.size, resample=Image.BICUBIC)
+    # Ensure original image is 224x224 to match the model input
+    original_image = original_image.resize((224, 224))
 
+    # Create Heatmap Image
     cmap = plt.get_cmap("jet")
-    heatmap_colored = cmap(np.array(heatmap) / 255.0)
-    heatmap_colored = (heatmap_colored[:, :, :3] * 255).astype(np.uint8)
+    heatmap_colored = cmap(heatmap)  # Returns RGBA
+    heatmap_colored = (heatmap_colored[:, :, :3] * 255).astype(np.uint8)  # Drop Alpha
     heatmap_img = Image.fromarray(heatmap_colored)
 
+    # Blend
     overlay = Image.blend(original_image.convert("RGB"), heatmap_img, alpha=0.5)
     return overlay
 
@@ -124,17 +138,12 @@ async def predict(file: UploadFile = File(...)):
             "filename": file.filename,
             "abnormality_probability": f"{abnormal_prob:.4f}",
             "diagnosis": "Abnormal" if abnormal_prob > 0.5 else "Normal",
-            "gradcam_image": img_str,
-            "error": None  # No error!
+            "gradcam_image": img_str
         }
 
     except Exception as e:
-        # CATCH THE ERROR AND RETURN IT
         return {
             "filename": "error",
-            "abnormality_probability": "0.0",
-            "diagnosis": "Error",
-            "gradcam_image": "",
             "error": str(e),
             "traceback": traceback.format_exc()
         }
