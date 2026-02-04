@@ -7,3 +7,5 @@ pillow
 numpy
 matplotlib
 python-multipart
+streamlit
+requests
