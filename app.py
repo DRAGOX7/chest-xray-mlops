@@ -3,12 +3,17 @@ import torch.nn.functional as F
 import io
 import base64
 import numpy as np
+
+# --- THE CRITICAL FIX STARTS HERE ---
+import matplotlib
+matplotlib.use('Agg')  # <--- THIS TELLS PYTHON "DO NOT OPEN A WINDOW"
 import matplotlib.pyplot as plt
+# --- FIX ENDS HERE ---
+
 from fastapi import FastAPI, File, UploadFile
 from PIL import Image
 import torchvision.transforms as transforms
 from model import build_model
-
 app = FastAPI(title="ABDULLAH AI - VERSION 2")
 
 # --- CONFIGURATION ---
