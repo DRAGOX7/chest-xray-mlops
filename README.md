@@ -18,9 +18,15 @@ The system is designed with a **Microservices Architecture**:
 1.  **The Brain (Backend):** A FastAPI server hosted on **Microsoft Azure**, running a DenseNet121 model.
 2.  **The Face (Frontend):** A Streamlit web interface for users to upload images and view results.
 3.  **The Explainability:** Integrated **Grad-CAM** (Gradient-weighted Class Activation Mapping) to visualize *why* the model made its decision.
+test:<img width="1091" height="748" alt="test" src="https://github.com/user-attachments/assets/51665c4e-5114-4702-b8af-8d2dd9cf0ec0" />
 
 ---
+## ✨ Key Features
 
+* **Explainable AI (XAI):** Returns a color-coded Grad-CAM heatmap alongside the prediction probability, crucial for medical domains where "black-box" models are insufficient.
+* **Decoupled Microservice Design:** The Streamlit frontend and FastAPI backend operate independently, allowing the backend compute to scale without affecting the user interface.
+* **Production Security:** Actively mitigated Critical/High CVEs (Common Vulnerabilities and Exposures) by auditing Docker image layers and upgrading base runtimes.
+  
 ## 🏗️ System Architecture
 
 | Component | Technology | Description |
