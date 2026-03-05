@@ -14,7 +14,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 5. Copy your application code and model
 COPY model.py .
 COPY app.py .
-COPY best_densenet121.pth .
+# Install curl, then download the weights directly from your GitHub Release
+# Replace the old COPY line with these:
+RUN apt-get update && apt-get install -y curl
+RUN curl -L -o best_densenet121.pth "https://github.com/DRAGOX7/chest-xray-mlops/releases/download/v1.0.0/best_densenet121.pth"
 
 # 6. Expose the port that FastAPI uses
 EXPOSE 8000
