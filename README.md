@@ -54,6 +54,7 @@ This project goes beyond simple prediction by implementing **Grad-CAM**.
 
 ---
 
+```mermaid
 graph LR
     A[Local Code] -->|git push| B(GitHub Actions)
     subgraph CI/CD Pipeline
@@ -64,6 +65,8 @@ graph LR
     end
     F --> G[Azure Web App]
     C -->|Fail| H[Stop & Notify]
+```
+
 
 🚀 MLOps & Automation Features
 Continuous Integration (CI): Automated testing using pytest to verify API health and model inference before every deployment.
