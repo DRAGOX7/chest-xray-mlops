@@ -6,7 +6,7 @@ import numpy as np
 import traceback
 import matplotlib
 
-matplotlib.use('Agg')  # Keep the "No Screen" fix
+matplotlib.use("Agg")  # Keep the "No Screen" fix
 import matplotlib.pyplot as plt
 from fastapi import FastAPI, File, UploadFile
 from PIL import Image
@@ -32,11 +32,13 @@ model.to(DEVICE)
 model.eval()
 
 # --- PREPROCESSING ---
-transform_preprocess = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-])
+transform_preprocess = transforms.Compose(
+    [
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+    ]
+)
 
 
 # --- GRAD-CAM HELPER FUNCTIONS ---
@@ -113,7 +115,7 @@ async def predict(file: UploadFile = File(...)):
     try:
         # 1. Load Image
         image_data = await file.read()
-        original_image = Image.open(io.BytesIO(image_data)).convert('RGB')
+        original_image = Image.open(io.BytesIO(image_data)).convert("RGB")
 
         # 2. Preprocess
         tensor = transform_preprocess(original_image).unsqueeze(0).to(DEVICE)
@@ -138,12 +140,12 @@ async def predict(file: UploadFile = File(...)):
             "filename": file.filename,
             "abnormality_probability": f"{abnormal_prob:.4f}",
             "diagnosis": "Abnormal" if abnormal_prob > 0.5 else "Normal",
-            "gradcam_image": img_str
+            "gradcam_image": img_str,
         }
 
     except Exception as e:
         return {
             "filename": "error",
             "error": str(e),
-            "traceback": traceback.format_exc()
+            "traceback": traceback.format_exc(),
         }

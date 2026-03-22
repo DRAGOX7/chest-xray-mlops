@@ -22,7 +22,9 @@ with st.sidebar:
     st.write("Built with PyTorch & FastAPI.")
 
 # --- FILE UPLOAD ---
-uploaded_file = st.file_uploader("Choose an X-ray image...", type=["jpg", "png", "jpeg"])
+uploaded_file = st.file_uploader(
+    "Choose an X-ray image...", type=["jpg", "png", "jpeg"]
+)
 
 if uploaded_file is not None:
     # 1. Show the image to the user
@@ -47,8 +49,8 @@ if uploaded_file is not None:
                     result = response.json()
 
                     # Display results
-                    diagnosis = result['diagnosis']
-                    prob = float(result['abnormality_probability'])
+                    diagnosis = result["diagnosis"]
+                    prob = float(result["abnormality_probability"])
 
                     st.divider()
 
@@ -67,23 +69,29 @@ if uploaded_file is not None:
                     with col2:
                         try:
                             # The image comes back as a text string (Base64), so we convert it back to an image
-                            gradcam_data = base64.b64decode(result['gradcam_image'])
+                            gradcam_data = base64.b64decode(result["gradcam_image"])
                             gradcam_img = Image.open(io.BytesIO(gradcam_data))
-                            st.image(gradcam_img, caption="AI Heatmap (Grad-CAM)", use_container_width=True)
+                            st.image(
+                                gradcam_img,
+                                caption="AI Heatmap (Grad-CAM)",
+                                use_container_width=True,
+                            )
                         except KeyError:
-                            st.warning("Heatmap not available yet (Update backend first).")
+                            st.warning(
+                                "Heatmap not available yet (Update backend first)."
+                            )
 
                     st.json(result)  # Show raw data
-                    
+
                     if diagnosis == "Abnormal":
                         st.error(f"🚨 **Diagnosis: ABNORMAL**")
                     else:
                         st.success(f"✅ **Diagnosis: NORMAL**")
-                        
+
                     st.write(f"**Confidence:** {prob*100:.2f}%")
-                    st.json(result) # Show raw data
+                    st.json(result)  # Show raw data
                 else:
                     st.error("Error communicating with the backend.")
-                    
+
             except Exception as e:
                 st.error(f"Connection failed: {e}")
