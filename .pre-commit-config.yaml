@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace # Removes extra spaces at the end of lines
       - id: end-of-file-fixer # Ensures files end with a newline
@@ -9,6 +9,18 @@ repos:
         args: ["--maxkb=5000"] # Blocks files larger than 5MB
 
   - repo: https://github.com/psf/black
-    rev: 23.12.1
+    rev: 26.3.1
     hooks:
       - id: black # Automatically formats your Python code to look pro
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.9.4
+    hooks:
+      - id: bandit
+        args: ["-lll"] # Only report high-severity issues to keep it simple
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ["--baseline", ".secrets.baseline"]
