@@ -55,15 +55,15 @@ This project goes beyond simple prediction by implementing **Grad-CAM**.
 ---
 
 graph LR
-A[Local Code] -->|git push| B(GitHub Actions)
-subgraph CI/CD Pipeline
-B --> C{Unit Tests}
-C -->|Pass| D[Download Weights]
-D --> E[Docker Build]
-E --> F[Push to Azure ACR]
-end
-F --> G[Azure Web App]
-C -->|Fail| H[Stop & Notify]
+    A[Local Code] -->|git push| B(GitHub Actions)
+    subgraph CI/CD Pipeline
+    B --> C{Unit Tests}
+    C -->|Pass| D[Download Weights]
+    D --> E[Docker Build]
+    E --> F[Push to Azure ACR]
+    end
+    F --> G[Azure Web App]
+    C -->|Fail| H[Stop & Notify]
 
 🚀 MLOps & Automation Features
 Continuous Integration (CI): Automated testing using pytest to verify API health and model inference before every deployment.
