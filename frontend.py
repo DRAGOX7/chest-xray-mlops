@@ -6,6 +6,7 @@ import io
 
 # --- CONFIGURATION ---
 # This is the address of your Azure backend
+
 API_URL = "https://aljaf-xray-final.azurewebsites.net/predict"
 
 st.set_page_config(page_title="Abdullah AI Diagnostic", page_icon="🩻")

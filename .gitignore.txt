@@ -1,0 +1,51 @@
+# =========================================
+# Abdullah AI - MLOps .gitignore
+# =========================================
+
+# 1. Machine Learning Model Weights
+# (Never push massive model files to GitHub)
+*.pth
+*.pt
+*.h5
+*.onnx
+*.pkl
+models/best_densenet121.pth
+
+# 2. Datasets & X-Ray Images
+# (Keep raw patient data out of version control)
+*.csv
+*.jpg
+*.jpeg
+*.png
+data/
+datasets/
+!t.png  # (Optional: Use the '!' to allow your specific test image to upload)
+
+# 3. Security, API Keys & Secrets
+# (CRITICAL: Never leak Azure credentials)
+.env
+.env.local
+credentials.json
+service-account.json
+secrets/
+
+# 4. Virtual Environments
+# (Let other devs build their own environments)
+venv/
+env/
+.venv/
+
+# 5. Python Caches & Logs
+# (Keeps your repository clean)
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ipynb_checkpoints/
+logs/
+*.log
+
+# 6. OS & IDE System Files
+.DS_Store
+.vscode/
+.idea/
