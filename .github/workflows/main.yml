@@ -26,6 +26,11 @@ jobs:
       - name: Run automated tests 🧪
         run: pytest test_app.py
       # --------------------------
+      # --- NEW: Download weights for the test phase ---
+      - name: Download Model Weights for Testing 📥
+        run: |
+          curl -L -o best_densenet121.pth "https://github.com/DRAGOX7/chest-xray-mlops/releases/download/v1.0.0/best_densenet121.pth"
+      # -----------------------------------------------
 
       - name: Log in to Azure
         uses: azure/login@v1
