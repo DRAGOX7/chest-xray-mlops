@@ -12,12 +12,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      # --- NEW TESTING PHASE ---
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.14' # Matches your Docker image
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx torch torchvision  # Required for your new tests
+
+      - name: Run automated tests 🧪
+        run: pytest test_app.py
+      # --------------------------
 
       - name: Log in to Azure
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+          creds: ${{ secrets.AZURE_CREDENTIALS }}    
+    
       - name: Log in to Container Registry
         run: az acr login --name aljafunique123
 
