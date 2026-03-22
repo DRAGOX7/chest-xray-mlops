@@ -5,6 +5,7 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
 ![Azure](https://img.shields.io/badge/Azure-Cloud_Deployment-0078D4)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-FF4B4B)
+![Build Status](https://github.com/DRAGOX7/chest-xray-mlops/actions/workflows/main.yml/badge.svg)
 
 ## 🚀 Live Demo
 
